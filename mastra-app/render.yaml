@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: mastra-agent-api
+    env: docker
+    region: oregon # can be changed to frankfurt, ohio, singapore
+    plan: free     # can be upgraded if needed
+    envVars:
+      - key: PORT
+        value: "3001"
+      - key: GOOGLE_API_KEY
+        sync: false # You will provide this manually in the Render Dashboard
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false # You will provide this manually in the Render Dashboard
