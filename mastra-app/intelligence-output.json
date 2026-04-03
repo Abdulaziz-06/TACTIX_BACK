@@ -1,0 +1,79 @@
+{
+  "nodes": [
+    {
+      "id": "ai_agent_deployment",
+      "label": "Agentic AI Proliferation",
+      "description": "Mass adoption of autonomous AI agents in enterprise workflows, replacing routine human tasks in coding, customer support, and data processing.",
+      "type": "SIGNAL",
+      "category": "GENERIC"
+    },
+    {
+      "id": "fresher_hiring_collapse",
+      "label": "Fresher Hiring Collapse",
+      "description": "Structural 80-86% decline in entry-level IT hiring; companies no longer need 'bench' strength for routine execution.",
+      "type": "IMPACT",
+      "category": "STOCK"
+    },
+    {
+      "id": "salary_compression",
+      "label": "Salary Package Depletion",
+      "description": "Stagnation of entry-level compensation as AI-augmented productivity reduces the 'human-per-dollar' value.",
+      "type": "IMPACT",
+      "category": "STOCK"
+    },
+    {
+      "id": "gcc_talent_drain",
+      "label": "GCC Top-Heavy Pivot",
+      "description": "Global Capability Centres cannibalize top-tier talent for AI/ML, abandoning the mass-market engineering graduate pool.",
+      "type": "DEPENDENCY",
+      "category": "STOCK"
+    },
+    {
+      "id": "social_instability",
+      "label": "Youth Productivity Loss",
+      "description": "Massive underemployment of the graduate cohort leads to long-term skill atrophy and potential social unrest in Tier-2/3 tech hubs.",
+      "type": "PREDICTION",
+      "category": "CALAMITY"
+    },
+    {
+      "id": "skill_mismatch",
+      "label": "Structural Skill Mismatch",
+      "description": "Widening gap between academic output and the high-judgment, AI-integrated roles required by the 2026 market.",
+      "type": "DEPENDENCY",
+      "category": "GENERIC"
+    }
+  ],
+  "edges": [
+    {
+      "from": "ai_agent_deployment",
+      "to": "fresher_hiring_collapse",
+      "relationship": "obliterates"
+    },
+    {
+      "from": "fresher_hiring_collapse",
+      "to": "salary_compression",
+      "relationship": "forces"
+    },
+    {
+      "from": "gcc_talent_drain",
+      "to": "fresher_hiring_collapse",
+      "relationship": "exacerbates"
+    },
+    {
+      "from": "fresher_hiring_collapse",
+      "to": "social_instability",
+      "relationship": "triggers"
+    },
+    {
+      "from": "ai_agent_deployment",
+      "to": "skill_mismatch",
+      "relationship": "widens"
+    },
+    {
+      "from": "skill_mismatch",
+      "to": "salary_compression",
+      "relationship": "bleeds"
+    }
+  ],
+  "headline": "THE GREAT DECOUPLING: AI AGENTS HAVE PERMANENTLY DISMANTLED THE INDIAN IT LABOR PYRAMID"
+}
