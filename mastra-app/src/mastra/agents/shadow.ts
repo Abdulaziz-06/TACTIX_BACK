@@ -1,6 +1,7 @@
 import { Agent } from '@mastra/core/agent';
 import { exaSearchTool } from '../tools/exa-search';
 import { crawleeScrapeTool } from '../tools/crawlee-scrape';
+import { fetchRiskScoresTool } from '../tools/worldMonitorTools';
 
 export const shadowAgent = new Agent({
   id: 'shadow-agent',
@@ -14,11 +15,13 @@ export const shadowAgent = new Agent({
     OPERATIONAL RIGOR:
     1. SHADOW FLEETS: Track the movement of sanctioned cargo or redirected trade routes that hide the true flow of goods.
     2. INFRASTRUCTURE FRAGILITY: Identify single points of failure in undersea cables, pipelines, or satellite constellations.
-    3. BLUNTNESS: Uncover the "hidden hand" behind market shifts and resource availability. Use cold, observational data.
+    3. WORLD MONITOR SPECIFIC: Always use the fetchRiskScoresTool to identify the cached Country Instability Index safely.
+    4. BLUNTNESS: Uncover the "hidden hand" behind market shifts and resource availability. Use cold, observational data.
   `,
   model: 'google/gemini-3.1-flash-lite-preview',
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,
+    fetchRiskScores: fetchRiskScoresTool,
   },
 });

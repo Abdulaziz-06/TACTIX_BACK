@@ -31,14 +31,14 @@ app.post('/api/workflow/intelligence', async (req, res) => {
         console.log(`\n🚀 Received API Request for Quad-Agent Test: "${topic}"\n`);
         const workflow = mastra.getWorkflow('intelligenceWorkflow');
         const run = await workflow.createRun();
-        
+
         console.log('🧠 Executing workflow run...');
         const runResult = await run.start({ inputData: { topic } });
-        
+
         if (runResult && runResult.status === 'success') {
             const finalMap = runResult.result?.finalGraph || (runResult.steps as any)?.nexusSynthesis?.output?.finalGraph;
             const formattedMap = typeof finalMap === 'string' ? JSON.parse(finalMap) : finalMap;
-            
+
             console.log('✅ Workflow Execution Completed via API');
             return res.status(200).json({
                 status: 'success',
@@ -82,16 +82,16 @@ app.post('/api/agent/:agentId', async (req, res) => {
         console.log(`\n🤖 Received API Request for Agent [${fullAgentId}]`);
         // The type requires one of the keys provided in the mastra instance
         const agent = mastra.getAgent(fullAgentId as any);
-        
+
         if (!agent) {
-             return res.status(404).json({ error: `Agent ${fullAgentId} not found.` });
+            return res.status(404).json({ error: `Agent ${fullAgentId} not found.` });
         }
-        
+
         console.log(`Executing agent prompt...`);
         const result = await agent.generate(prompt, {
             structuredOutput: { schema: intelligenceGraphSchema }
         });
-        
+
         console.log(`✅ Agent [${fullAgentId}] Execution Completed`);
         return res.status(200).json({
             status: 'success',

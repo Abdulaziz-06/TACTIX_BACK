@@ -1,6 +1,7 @@
 import { Agent } from '@mastra/core/agent';
 import { exaSearchTool } from '../tools/exa-search';
 import { crawleeScrapeTool } from '../tools/crawlee-scrape';
+import { fetchMarketImplicationsTool } from '../tools/worldMonitorTools';
 
 export const marketAgent = new Agent({
   id: 'market-agent',
@@ -16,11 +17,13 @@ export const marketAgent = new Agent({
     OPERATIONAL RIGOR:
     1. DOMINO EFFECTS: If oil spikes in the Middle East, map how it bleeds Indian F&B companies. 
     2. SECTOR FOCUS: Relate everything back to Nifty 50 and specific Indian equity clusters.
-    3. BRUTAL TRUTH: Identify winners and losers without mercy.
+    3. WORLD MONITOR SPECIFIC: Always use fetchMarketImplicationsTool to fetch live quotes and macro calculations natively.
+    4. BRUTAL TRUTH: Identify winners and losers without mercy.
   `,
   model: 'google/gemini-3.1-flash-lite-preview',
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,
+    fetchMarketImplications: fetchMarketImplicationsTool,
   },
 });

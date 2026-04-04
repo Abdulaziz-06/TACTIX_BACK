@@ -5,13 +5,19 @@ export const NodeSchema = z.object({
   label: z.string().describe("Short title (e.g. 'Brent Crude Rally')"),
   description: z.string().describe("Direct, blunt description of the node and its fallout"),
   type: z.enum(['SIGNAL', 'DEPENDENCY', 'IMPACT', 'PREDICTION']).describe("Role in the intelligence chain"),
-  category: z.enum(['STOCK', 'CALAMITY', 'GENERIC']).describe("The domain this node primarily impacts")
+  category: z.enum(['STOCK', 'CALAMITY', 'GENERIC', 'GEOPOLITICAL']).describe("The domain this node primarily impacts"),
+  threatLevel: z.enum(['LOW', 'ELEVATED', 'CRITICAL']).optional().describe("Computed risk or threat level"),
+  metrics: z.array(z.object({
+    name: z.string(),
+    value: z.number()
+  })).optional().describe("Numerical data enforcing strict metric tracking (e.g. magnitude, stock price, risk index)")
 });
 
 export const EdgeSchema = z.object({
   from: z.string().describe("Source node ID"),
   to: z.string().describe("Target node ID"),
-  relationship: z.string().describe("Blunt phrase describing the causal link (e.g. 'triggers', 'starves', 'bleeds')")
+  relationship: z.string().describe("Blunt phrase describing the causal link (e.g. 'triggers', 'starves', 'bleeds')"),
+  correlationScore: z.number().min(0).max(1).optional().describe("A calculated float 0-1 outlining the definitive connection strength")
 });
 
 export const intelligenceGraphSchema = z.object({

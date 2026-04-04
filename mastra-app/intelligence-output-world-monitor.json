@@ -1,0 +1,181 @@
+{
+  "nodes": [
+    {
+      "id": "taiwan_seismic_event",
+      "label": "Taiwan Tectonic/Geopolitical Shock",
+      "description": "High-magnitude seismic event or kinetic blockade in the Taiwan Strait, targeting the world's primary semiconductor manufacturing hub.",
+      "type": "SIGNAL",
+      "category": "CALAMITY",
+      "threatLevel": "CRITICAL"
+    },
+    {
+      "id": "tsmc_fab_shutdown",
+      "label": "TSMC Fab Shutdown",
+      "description": "Immediate cessation of lithography operations; vibration-sensitive equipment requires weeks of recalibration.",
+      "type": "DEPENDENCY",
+      "category": "STOCK",
+      "threatLevel": "CRITICAL",
+      "metrics": [
+        {
+          "name": "global_advanced_chip_share",
+          "value": 90
+        },
+        {
+          "name": "recalibration_lead_time_weeks",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "id": "tech_supply_chain_collapse",
+      "label": "Global Tech Supply Chain Breakage",
+      "description": "Downstream failure of AI, automotive, and consumer electronics sectors due to zero-inventory buffer.",
+      "type": "IMPACT",
+      "category": "STOCK",
+      "threatLevel": "CRITICAL",
+      "metrics": [
+        {
+          "name": "inventory_buffer_weeks",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "id": "nifty_tech_crash",
+      "label": "Nifty IT Sector Collapse",
+      "description": "Indian IT services and hardware-dependent firms face massive revenue contraction due to client hardware shortages.",
+      "type": "IMPACT",
+      "category": "STOCK",
+      "threatLevel": "CRITICAL",
+      "metrics": [
+        {
+          "name": "predicted_sector_loss_pct",
+          "value": 18.5
+        }
+      ]
+    },
+    {
+      "id": "geopolitical_volatility",
+      "label": "Strait Tension Escalation",
+      "description": "Vulnerability of Taiwan's infrastructure invites aggressive posturing, increasing risk of blockade or kinetic conflict.",
+      "type": "PREDICTION",
+      "category": "GEOPOLITICAL",
+      "threatLevel": "ELEVATED",
+      "metrics": [
+        {
+          "name": "conflict_probability_index",
+          "value": 0.22
+        }
+      ]
+    },
+    {
+      "id": "inflationary_domino",
+      "label": "Inflationary Domino Effect",
+      "description": "Supply chain breakdown triggers global inflation, spiking energy and food costs.",
+      "type": "PREDICTION",
+      "category": "GENERIC",
+      "threatLevel": "ELEVATED",
+      "metrics": [
+        {
+          "name": "cpi_impact_bps",
+          "value": 150
+        }
+      ]
+    },
+    {
+      "id": "shadow_trade_disruption",
+      "label": "Maritime Trade Route Paralysis",
+      "description": "Increased naval presence in the Taiwan Strait forces rerouting of global shipping, spiking insurance premiums.",
+      "type": "IMPACT",
+      "category": "GEOPOLITICAL",
+      "threatLevel": "ELEVATED"
+    },
+    {
+      "id": "sovereign_debt_risk",
+      "label": "Sovereign Debt Risk",
+      "description": "Fiscal strain on nations heavily reliant on tech exports as GDP growth stalls.",
+      "type": "PREDICTION",
+      "category": "GEOPOLITICAL",
+      "threatLevel": "ELEVATED"
+    },
+    {
+      "id": "energy_market_volatility",
+      "label": "Energy Market Volatility",
+      "description": "Disruption in shipping lanes forces energy price spikes, compounding the inflationary crisis.",
+      "type": "IMPACT",
+      "category": "STOCK",
+      "threatLevel": "ELEVATED"
+    },
+    {
+      "id": "nexus_node_taiwan",
+      "label": "The Taiwan Nexus",
+      "description": "The convergence point where tectonic risk, semiconductor dependency, and geopolitical power projection collide.",
+      "type": "SIGNAL",
+      "category": "GEOPOLITICAL",
+      "threatLevel": "CRITICAL"
+    }
+  ],
+  "edges": [
+    {
+      "from": "taiwan_seismic_event",
+      "to": "tsmc_fab_shutdown",
+      "relationship": "triggers",
+      "correlationScore": 0.98
+    },
+    {
+      "from": "tsmc_fab_shutdown",
+      "to": "tech_supply_chain_collapse",
+      "relationship": "starves",
+      "correlationScore": 0.98
+    },
+    {
+      "from": "tsmc_fab_shutdown",
+      "to": "geopolitical_volatility",
+      "relationship": "exposes",
+      "correlationScore": 0.75
+    },
+    {
+      "from": "tech_supply_chain_collapse",
+      "to": "nifty_tech_crash",
+      "relationship": "bleeds",
+      "correlationScore": 0.85
+    },
+    {
+      "from": "tech_supply_chain_collapse",
+      "to": "inflationary_domino",
+      "relationship": "fuels",
+      "correlationScore": 0.75
+    },
+    {
+      "from": "geopolitical_volatility",
+      "to": "shadow_trade_disruption",
+      "relationship": "forces",
+      "correlationScore": 0.82
+    },
+    {
+      "from": "shadow_trade_disruption",
+      "to": "energy_market_volatility",
+      "relationship": "spikes",
+      "correlationScore": 0.7
+    },
+    {
+      "from": "nifty_tech_crash",
+      "to": "sovereign_debt_risk",
+      "relationship": "weakens",
+      "correlationScore": 0.65
+    },
+    {
+      "from": "taiwan_seismic_event",
+      "to": "nexus_node_taiwan",
+      "relationship": "defines",
+      "correlationScore": 1
+    },
+    {
+      "from": "nexus_node_taiwan",
+      "to": "tsmc_fab_shutdown",
+      "relationship": "controls",
+      "correlationScore": 0.95
+    }
+  ],
+  "headline": "THE SILICON CHOKEPOINT: TECTONIC AND GEOPOLITICAL CONVERGENCE IN TAIWAN TO TRIGGER GLOBAL ECONOMIC COLLAPSE."
+}

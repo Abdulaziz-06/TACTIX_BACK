@@ -21,6 +21,7 @@
     "@ai-sdk/google": "^3.0.57",
     "@mastra/core": "^1.21.0",
     "@mastra/engine": "^0.1.0-alpha.84",
+    "@types/node-cache": "^4.1.3",
     "axios": "^1.14.0",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
@@ -29,6 +30,7 @@
     "exa-js": "^2.10.2",
     "express": "^5.2.1",
     "mastra": "^1.3.19",
+    "node-cache": "^5.1.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
