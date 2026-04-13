@@ -3,6 +3,7 @@ import { marketAgent } from './agents/market';
 import { natureAgent } from './agents/nature';
 import { shadowAgent } from './agents/shadow';
 import { nexusAgent } from './agents/nexus';
+import { globeAgent } from './agents/globe';
 import { intelligenceWorkflow } from './workflows/intelligence';
 
 // Alias GOOGLE_API_KEY to what AI-SDK/Mastra expects
@@ -15,7 +16,8 @@ export const mastra = new Mastra({
     marketAgent, 
     natureAgent, 
     shadowAgent, 
-    nexusAgent 
+    nexusAgent,
+    globeAgent
   },
   workflows: { 
     intelligenceWorkflow 

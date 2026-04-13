@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { mastra } from '../mastra/index.js';
 import { intelligenceGraphSchema } from '../mastra/agents/schemas.js';
+import { GlobalMapSchema } from '../mastra/agents/globe.js';
 
 // Load environment variables manually if needed
 dotenv.config();
@@ -66,6 +67,45 @@ app.post('/api/workflow/intelligence', async (req, res) => {
     }
 });
 
+// Geographic Conflict and Real-Time News API
+app.post('/api/agent/globe', async (req, res) => {
+    const { region, countries } = req.body;
+
+    const prompt = countries ? 
+        `List the recent conflict-based status and news for: ${countries.join(', ')}.` :
+        `Analyze current states and news for major countries in the ${region || 'Global'} region.`;
+
+    try {
+        console.log(`\n🗺️  Received API Request for Globe Agent.`);
+        const agent = (mastra as any).getAgent('globeAgent');
+
+        if (!agent) {
+             return res.status(404).json({ error: `Agent globeAgent not found.` });
+        }
+
+        console.log(`Executing globe mapping with recent news for ${region || 'all'}...`);
+        const result = await agent.generate(prompt, {
+            structuredOutput: { schema: GlobalMapSchema }
+        });
+
+        console.log(`✅ Globe Agent Execution Completed`);
+        
+        const responseData = result.object || { countries: [] };
+
+        return res.status(200).json({
+            status: 'success',
+            agent: 'globeAgent',
+            data: responseData
+        });
+    } catch (error: any) {
+        console.error(`❌ Globe Agent API Error:`, error);
+        return res.status(500).json({
+            status: 'error',
+            error: error.message || 'Internal server error during globe mapping.'
+        });
+    }
+});
+
 // Individual Agent Trigger API
 app.post('/api/agent/:agentId', async (req, res) => {
     const { agentId } = req.params;
@@ -93,10 +133,23 @@ app.post('/api/agent/:agentId', async (req, res) => {
         });
 
         console.log(`✅ Agent [${fullAgentId}] Execution Completed`);
+        
+        // Detailed logging for debugging
+        if (!result.object && !result.text) {
+            console.warn(`⚠️ Agent [${fullAgentId}] returned neither object nor text. Result:`, JSON.stringify(result, null, 2));
+        }
+
+        // Return structured data, defaulting to an empty graph if both fields are missing
+        const responseData = result.object || (result.text ? { textContent: result.text } : {
+            nodes: [],
+            edges: [],
+            headline: "No definitive intelligence signals found for this sector at the current temporal anchor."
+        });
+
         return res.status(200).json({
             status: 'success',
             agent: fullAgentId,
-            data: result.object || result.text
+            data: responseData
         });
     } catch (error: any) {
         console.error(`❌ Agent [${fullAgentId}] API Error:`, error);
