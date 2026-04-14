@@ -1,4 +1,4 @@
-import './mastra/env-init.js';
+import '../mastra/env-init.js';
 import express from 'express';
 import cors from 'cors';
 import { mastra } from '../mastra/index.js';
