@@ -20,7 +20,10 @@ export const marketAgent = new Agent({
     3. TACTIX INTELLIGENCE: Always use fetchMarketImplicationsTool to fetch live market signals and macro calculations natively.
     4. BRUTAL TRUTH: Identify winners and losers without mercy.
   `,
-  model: 'google/gemini-3.1-flash-lite-preview',
+  model: {
+    id: 'google/gemini-1.5-flash',
+    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+  },
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,

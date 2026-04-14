@@ -18,7 +18,10 @@ export const nexusAgent = new Agent({
     OUTPUT FORMAT:
     You must output a unified JSON graph. No apologies, no filler. Just the data.
   `,
-  model: 'google/gemini-3.1-flash-lite-preview',
+  model: {
+    id: 'google/gemini-1.5-flash',
+    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+  },
   tools: {
     fetchServerDigest: fetchServerDigestTool,
   },

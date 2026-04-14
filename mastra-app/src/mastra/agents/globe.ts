@@ -35,7 +35,10 @@ export const globeAgent = new Agent({
     OUTPUT EXPECTATION:
     Provide a list of countries with their status, color code, and the absolute latest headline.
   `,
-  model: 'google/gemini-3.1-flash-lite-preview',
+  model: {
+    id: 'google/gemini-1.5-flash',
+    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+  },
   tools: {
     exaSearch: exaSearchTool,
   },

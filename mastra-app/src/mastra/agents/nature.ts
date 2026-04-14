@@ -18,7 +18,10 @@ export const natureAgent = new Agent({
     3. TACTIX INTELLIGENCE: Always use fetchEarthquakesTool to pull the latest live deterministic natural calamity data directly from USGS.
     4. BLUNTNESS: No "climate awareness". Predict the actual death or productivity loss of regions.
   `,
-  model: 'google/gemini-3.1-flash-lite-preview',
+  model: {
+    id: 'google/gemini-1.5-flash',
+    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+  },
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,

@@ -18,7 +18,10 @@ export const shadowAgent = new Agent({
     3. TACTIX INTELLIGENCE: Always use the fetchRiskScoresTool to identify the latest geopolitical instability signals and computed risk scores.
     4. BLUNTNESS: Uncover the "hidden hand" behind market shifts and resource availability. Use cold, observational data.
   `,
-  model: 'google/gemini-3.1-flash-lite-preview',
+  model: {
+    id: 'google/gemini-1.5-flash',
+    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+  },
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,
