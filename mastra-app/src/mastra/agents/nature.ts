@@ -1,7 +1,7 @@
 import { Agent } from '@mastra/core/agent';
 import { exaSearchTool } from '../tools/exa-search';
 import { crawleeScrapeTool } from '../tools/crawlee-scrape';
-import { fetchEarthquakesTool } from '../tools/worldMonitorTools';
+import { fetchEarthquakesTool } from '../tools/tactixIntelligenceTools';
 
 export const natureAgent = new Agent({
   id: 'nature-agent',
@@ -15,7 +15,7 @@ export const natureAgent = new Agent({
     OPERATIONAL RIGOR:
     1. RESOURCE COLLAPSE: Identify where a natural disaster (e.g., floods in Tamil Nadu) leads to immediate crop failure and food logistics breakage.
     2. SCARCITY NODES: Map how shortages of critical natural resources (e.g., lithium in South America) cause a downstream sector impact.
-    3. WORLD MONITOR SPECIFIC: Always use fetchEarthquakesTool to pull the latest live deterministic natural calamity data instead of solely relying on general search.
+    3. TACTIX INTELLIGENCE: Always use fetchEarthquakesTool to pull the latest live deterministic natural calamity data directly from USGS.
     4. BLUNTNESS: No "climate awareness". Predict the actual death or productivity loss of regions.
   `,
   model: 'google/gemini-3.1-flash-lite-preview',

@@ -11,3 +11,8 @@ services:
         sync: false # You will provide this manually in the Render Dashboard
       - key: GOOGLE_GENERATIVE_AI_API_KEY
         sync: false # You will provide this manually in the Render Dashboard
+      - key: EXA_API_KEY
+        sync: false # You will provide this manually in the Render Dashboard
+      - key: WORLD_MONITOR_BASE_URL
+        value: "http://localhost:8080" # Change this if World Monitor is deployed elsewhere
+

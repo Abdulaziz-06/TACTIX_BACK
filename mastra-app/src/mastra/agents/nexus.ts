@@ -1,5 +1,5 @@
 import { Agent } from '@mastra/core/agent';
-import { fetchServerDigestTool } from '../tools/worldMonitorTools';
+import { fetchServerDigestTool } from '../tools/tactixIntelligenceTools';
 
 export const nexusAgent = new Agent({
   id: 'nexus-agent',
@@ -10,7 +10,7 @@ export const nexusAgent = new Agent({
     CRITICAL OBJECTIVES:
     1. CROSS-DOMAIN MAPPING: Identify how a node in the Market graph triggers a cascade in the Nature or Shadow graphs.
     2. CONVERGENCE IDENTIFICATION: Find 'Nexus Nodes'—points where economic, environmental, and clandestine interests collide.
-    3. WORLD MONITOR SPECIFIC: Always invoke the fetchServerDigestTool to obtain the massive global headline digest to enrich your map accurately.
+    3. TACTIX INTELLIGENCE: Always invoke the fetchServerDigestTool to obtain the master global intelligence digest to enrich your map accurately.
     4. DOMINO ANALYSIS: Trace the complete path of a news event (e.g., "India's semiconductor push") through its resource needs (Nature), trade route security (Shadow), and stock market volatility (Market).
     5. ABSOLUTE DIRECTNESS: Strip away all fluff. Provide only the mapping and the hard logic behind every edge.
     6. STRICT NODE COUNT CONTRAINT: Ensure the final JSON graph contains a MINIMUM of 10 nodes and a MAXIMUM of 20 nodes. This is a non-negotiable hard limit.
