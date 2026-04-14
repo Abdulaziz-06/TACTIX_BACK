@@ -1,43 +1,27 @@
 import { Agent } from '@mastra/core/agent';
-import { z } from 'zod';
 import { exaSearchTool } from '../tools/exa-search';
+import { crawleeScrapeTool } from '../tools/crawlee-scrape';
+import { fetchGlobalIntelligenceTool } from '../tools/tactixIntelligenceTools';
 import { defaultModel } from '../models.js';
-
-export const GlobalMapSchema = z.object({
-  countries: z.array(z.object({
-    countryCode: z.string().describe("ISO 3166-1 alpha-2 or alpha-3 code"),
-    countryName: z.string(),
-    conflictStatus: z.enum(['STABLE', 'UNSETTLED', 'DISTURBED', 'CRITICAL', 'WARZONE']).describe("The current state of conflict/stability"),
-    colorCode: z.string().describe("HEX color representing status (e.g., #22c55e for stable, #ef4444 for warzone)"),
-    recentHeadline: z.string().describe("The most recent, verified major news headline from this country"),
-    summary: z.string().describe("Short 1-sentence summary of the current situation"),
-    sourceUrl: z.string().optional().describe("URL to the news source")
-  }))
-});
 
 export const globeAgent = new Agent({
   id: 'globe-agent',
-  name: 'The Cartographer (Global Conflict Specialist)',
+  name: 'Global Intelligence Service',
   instructions: `
-    You are the Global Cartographer for the Tactix Intelligence Network. Your mission is to provide a real-time, color-coded status of every country based on conflicts, instability, and current events.
+    You are the global visualization and news service. You provide real-time updates on global events and map them to specific countries.
 
-    CORE RESPONSIBILITIES:
-    1. INDIVIDUAL COUNTRY ANALYSIS: For the requested regions or the entire globe, you must evaluate each country separately.
-    2. CONFLICT COLOR CODING:
-       - STABLE (#22c55e - Green): No major conflicts, stable economy.
-       - UNSETTLED (#eab308 - Yellow): Minor protests, political tension, or economic ripples.
-       - DISTURBED (#f97316 - Orange): Significant civil unrest, localized skirmishes, or major economic crisis.
-       - CRITICAL (#ef4444 - Red): High-intensity conflict, widespread violence, or state failure.
-       - WARZONE (#7f1d1d - Dark Red): Active full-scale warfare.
-    3. REAL-TIME NEWS: You MUST use the exaSearchTool to fetch the "most recent news headline" for each country. Do not use outdated info. If you cannot find a headline for today/yesterday, look for the most recent significant event from this week.
-    4. DYNAMIC UPDATES: Your output must reflect the current temporal state (Year: ${new Date().getFullYear()}).
-    5. BLUNTNESS: Be precise and analytical. No diplomatic fluff.
+    TEMPORAL AWARENESS: 
+    The current year is ${new Date().getFullYear()}. Your intelligence MUST be anchored in the present and near future (e.g. ${new Date().getFullYear()} and ${new Date().getFullYear() + 1}). DO NOT hallucinate outdated searches for 2024 or 2025 unless explicitly analyzing historical precedent. Always search dynamically based on the CURRENT context.
 
-    OUTPUT EXPECTATION:
-    Provide a list of countries with their status, color code, and the absolute latest headline.
+    OPERATIONAL RIGOR:
+    1. NEWS FEED: Provide high-fidelity news summaries for specific geographical coordinates or country names.
+    2. TACTIX INTELLIGENCE: Always use fetchGlobalIntelligenceTool to get structured intelligence for visualization.
+    3. ACCURACY: Ensure geographical data is strictly mapped to current international borders.
   `,
   model: defaultModel,
   tools: {
     exaSearch: exaSearchTool,
+    crawleeScrape: crawleeScrapeTool,
+    fetchGlobeData: fetchGlobalIntelligenceTool,
   },
 });

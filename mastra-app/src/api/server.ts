@@ -1,9 +1,17 @@
-import '../mastra/env-init.js';
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import { mastra } from '../mastra/index.js';
 import { intelligenceGraphSchema } from '../mastra/agents/schemas.js';
 import { GlobalMapSchema } from '../mastra/agents/globe.js';
+
+// Load environment variables manually if needed
+dotenv.config();
+
+// Ensure Google API Key alias is set
+if (process.env.GOOGLE_API_KEY && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY = process.env.GOOGLE_API_KEY;
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -63,7 +71,7 @@ app.post('/api/workflow/intelligence', async (req, res) => {
 app.post('/api/agent/globe', async (req, res) => {
     const { region, countries } = req.body;
 
-    const prompt = countries ? 
+    const prompt = countries ?
         `List the recent conflict-based status and news for: ${countries.join(', ')}.` :
         `Analyze current states and news for major countries in the ${region || 'Global'} region.`;
 
@@ -72,7 +80,7 @@ app.post('/api/agent/globe', async (req, res) => {
         const agent = (mastra as any).getAgent('globeAgent');
 
         if (!agent) {
-             return res.status(404).json({ error: `Agent globeAgent not found.` });
+            return res.status(404).json({ error: `Agent globeAgent not found.` });
         }
 
         console.log(`Executing globe mapping with recent news for ${region || 'all'}...`);
@@ -81,7 +89,7 @@ app.post('/api/agent/globe', async (req, res) => {
         });
 
         console.log(`✅ Globe Agent Execution Completed`);
-        
+
         const responseData = result.object || { countries: [] };
 
         return res.status(200).json({
@@ -125,7 +133,7 @@ app.post('/api/agent/:agentId', async (req, res) => {
         });
 
         console.log(`✅ Agent [${fullAgentId}] Execution Completed`);
-        
+
         // Detailed logging for debugging
         if (!result.object && !result.text) {
             console.warn(`⚠️ Agent [${fullAgentId}] returned neither object nor text. Result:`, JSON.stringify(result, null, 2));

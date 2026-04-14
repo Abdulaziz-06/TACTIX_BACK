@@ -1,21 +1,21 @@
 import './env-init.js';
 import { Mastra } from '@mastra/core';
-import { marketAgent } from './agents/market.js';
-import { natureAgent } from './agents/nature.js';
-import { shadowAgent } from './agents/shadow.js';
-import { nexusAgent } from './agents/nexus.js';
-import { globeAgent } from './agents/globe.js';
-import { intelligenceWorkflow } from './workflows/intelligence.js';
+import { marketAgent } from './agents/market';
+import { natureAgent } from './agents/nature';
+import { shadowAgent } from './agents/shadow';
+import { nexusAgent } from './agents/nexus';
+import { globeAgent } from './agents/globe';
+import { intelligenceWorkflow } from './workflows/intelligence';
 
 export const mastra = new Mastra({
-  agents: { 
-    marketAgent, 
-    natureAgent, 
-    shadowAgent, 
+  agents: {
+    marketAgent,
+    natureAgent,
+    shadowAgent,
     nexusAgent,
     globeAgent
   },
-  workflows: { 
-    intelligenceWorkflow 
+  workflows: {
+    intelligenceWorkflow
   },
 });
