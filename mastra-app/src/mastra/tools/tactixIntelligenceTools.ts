@@ -1,4 +1,4 @@
-import { createTool } from '@mastra/core/tool';
+import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 
 /**
@@ -7,20 +7,19 @@ import { z } from 'zod';
  */
 export const fetchEarthquakesTool = createTool({
   id: 'fetch-earthquakes',
-  name: 'fetchEarthquakes',
   description: 'Fetches the latest earthquake data from USGS for risk assessment.',
   inputSchema: z.object({
     limit: z.number().optional().default(10),
     minMagnitude: z.number().optional().default(1.0),
   }),
-  execute: async ({ input }) => {
+  execute: async ({ limit, minMagnitude }) => {
     const response = await fetch(
       `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson`
     );
     const data = await response.json();
     return data.features
-      .filter((f: any) => f.properties.mag >= input.minMagnitude)
-      .slice(0, input.limit)
+      .filter((f: any) => f.properties.mag >= minMagnitude)
+      .slice(0, limit)
       .map((f: any) => ({
         place: f.properties.place,
         mag: f.properties.mag,
@@ -36,15 +35,14 @@ export const fetchEarthquakesTool = createTool({
  */
 export const fetchMarketImplicationsTool = createTool({
   id: 'fetch-market-implications',
-  name: 'fetchMarketImplications',
   description: 'Fetches global market signals and news for financial risk modeling.',
   inputSchema: z.object({
     query: z.string(),
   }),
-  execute: async ({ input }) => {
+  execute: async ({ query }) => {
     return {
       signal: 'VOLATILE',
-      summary: `Market sentiment for "${input.query}" indicates high sensitivity to recent geopolitical shifts.`,
+      summary: `Market sentiment for "${query}" indicates high sensitivity to recent geopolitical shifts.`,
       timestamp: new Date().toISOString(),
     };
   },
@@ -56,14 +54,13 @@ export const fetchMarketImplicationsTool = createTool({
  */
 export const fetchRiskScoresTool = createTool({
   id: 'fetch-risk-scores',
-  name: 'fetchRiskScores',
   description: 'Provides computed geopolitical risk scores and domain instability metrics.',
   inputSchema: z.object({
     region: z.string(),
   }),
-  execute: async ({ input }) => {
+  execute: async ({ region }) => {
     return {
-      region: input.region,
+      region: region,
       instabilityIndex: (Math.random() * 10).toFixed(2),
       status: 'MONITORED',
       lastUpdate: new Date().toISOString(),
@@ -77,14 +74,13 @@ export const fetchRiskScoresTool = createTool({
  */
 export const fetchGlobalIntelligenceTool = createTool({
   id: 'fetch-global-intelligence',
-  name: 'fetchGlobalIntelligence',
   description: 'Aggregates intelligence from all TACTIX nodes for final synthesis.',
   inputSchema: z.object({
     context: z.string(),
   }),
-  execute: async ({ input }) => {
+  execute: async ({ context }) => {
     return {
-      context: input.context,
+      context: context,
       synthesis: 'Synthetic modeling pending full node synchronization.',
       confidenceScore: 0.88,
     };
