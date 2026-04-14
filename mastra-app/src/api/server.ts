@@ -160,6 +160,17 @@ app.post('/api/agent/:agentId', async (req, res) => {
     }
 });
 
+app.get('/api/list-models', async (req, res) => {
+    try {
+        const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GOOGLE_API_KEY;
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        const data = await response.json();
+        res.json(data);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // A basic health check index
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', mastra: 'ready' });
