@@ -1,7 +1,7 @@
 import { Agent } from '@mastra/core/agent';
-import { exaSearchTool } from '../tools/exa-search';
-import { crawleeScrapeTool } from '../tools/crawlee-scrape';
-import { fetchEarthquakesTool } from '../tools/tactixIntelligenceTools';
+import { exaSearchTool } from '../tools/exa-search.js';
+import { crawleeScrapeTool } from '../tools/crawlee-scrape.js';
+import { fetchEarthquakesTool } from '../tools/tactixIntelligenceTools.js';
 import { defaultModel } from '../models.js';
 
 export const natureAgent = new Agent({
