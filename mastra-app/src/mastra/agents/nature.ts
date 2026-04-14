@@ -2,6 +2,7 @@ import { Agent } from '@mastra/core/agent';
 import { exaSearchTool } from '../tools/exa-search';
 import { crawleeScrapeTool } from '../tools/crawlee-scrape';
 import { fetchEarthquakesTool } from '../tools/tactixIntelligenceTools';
+import { defaultModel } from '../models.js';
 
 export const natureAgent = new Agent({
   id: 'nature-agent',
@@ -18,10 +19,7 @@ export const natureAgent = new Agent({
     3. TACTIX INTELLIGENCE: Always use fetchEarthquakesTool to pull the latest live deterministic natural calamity data directly from USGS.
     4. BLUNTNESS: No "climate awareness". Predict the actual death or productivity loss of regions.
   `,
-  model: {
-    id: 'google/gemini-1.5-flash',
-    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
-  },
+  model: defaultModel,
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,

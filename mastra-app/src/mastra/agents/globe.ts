@@ -1,6 +1,7 @@
 import { Agent } from '@mastra/core/agent';
 import { z } from 'zod';
 import { exaSearchTool } from '../tools/exa-search';
+import { defaultModel } from '../models.js';
 
 export const GlobalMapSchema = z.object({
   countries: z.array(z.object({
@@ -35,10 +36,7 @@ export const globeAgent = new Agent({
     OUTPUT EXPECTATION:
     Provide a list of countries with their status, color code, and the absolute latest headline.
   `,
-  model: {
-    id: 'google/gemini-1.5-flash',
-    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
-  },
+  model: defaultModel,
   tools: {
     exaSearch: exaSearchTool,
   },

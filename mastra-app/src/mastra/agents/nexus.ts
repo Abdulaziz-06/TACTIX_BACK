@@ -1,5 +1,6 @@
 import { Agent } from '@mastra/core/agent';
 import { fetchServerDigestTool } from '../tools/tactixIntelligenceTools';
+import { defaultModel } from '../models.js';
 
 export const nexusAgent = new Agent({
   id: 'nexus-agent',
@@ -18,10 +19,7 @@ export const nexusAgent = new Agent({
     OUTPUT FORMAT:
     You must output a unified JSON graph. No apologies, no filler. Just the data.
   `,
-  model: {
-    id: 'google/gemini-1.5-flash',
-    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
-  },
+  model: defaultModel,
   tools: {
     fetchServerDigest: fetchServerDigestTool,
   },

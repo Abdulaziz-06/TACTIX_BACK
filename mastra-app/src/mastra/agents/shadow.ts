@@ -2,6 +2,7 @@ import { Agent } from '@mastra/core/agent';
 import { exaSearchTool } from '../tools/exa-search';
 import { crawleeScrapeTool } from '../tools/crawlee-scrape';
 import { fetchRiskScoresTool } from '../tools/tactixIntelligenceTools';
+import { defaultModel } from '../models.js';
 
 export const shadowAgent = new Agent({
   id: 'shadow-agent',
@@ -18,10 +19,7 @@ export const shadowAgent = new Agent({
     3. TACTIX INTELLIGENCE: Always use the fetchRiskScoresTool to identify the latest geopolitical instability signals and computed risk scores.
     4. BLUNTNESS: Uncover the "hidden hand" behind market shifts and resource availability. Use cold, observational data.
   `,
-  model: {
-    id: 'google/gemini-1.5-flash',
-    apiKey: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
-  },
+  model: defaultModel,
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,
