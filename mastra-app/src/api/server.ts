@@ -1,17 +1,9 @@
+import './mastra/env-init.js';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { mastra } from '../mastra/index.js';
 import { intelligenceGraphSchema } from '../mastra/agents/schemas.js';
 import { GlobalMapSchema } from '../mastra/agents/globe.js';
-
-// Load environment variables manually if needed
-dotenv.config();
-
-// Ensure Google API Key alias is set
-if (process.env.GOOGLE_API_KEY && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY = process.env.GOOGLE_API_KEY;
-}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
