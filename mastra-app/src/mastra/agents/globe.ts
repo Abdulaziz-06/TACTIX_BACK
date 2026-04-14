@@ -1,8 +1,24 @@
 import { Agent } from '@mastra/core/agent';
+import { z } from 'zod';
 import { exaSearchTool } from '../tools/exa-search.js';
 import { crawleeScrapeTool } from '../tools/crawlee-scrape.js';
 import { fetchGlobalIntelligenceTool } from '../tools/tactixIntelligenceTools.js';
 import { defaultModel } from '../models.js';
+
+export const GlobalMapSchema = z.object({
+  countries: z.array(z.object({
+    name: z.string(),
+    isoCode: z.string(),
+    conflictStatus: z.enum(['STABLE', 'MONITORED', 'TENSION', 'CONFLICT', 'CRITICAL']),
+    headline: z.string(),
+    summary: z.string(),
+    riskScore: z.number(),
+    coordinates: z.object({
+      lat: z.number(),
+      lng: z.number()
+    })
+  }))
+});
 
 export const globeAgent = new Agent({
   id: 'globe-agent',
