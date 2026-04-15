@@ -3,12 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { mastra } from '../mastra/index.js';
 import { intelligenceGraphSchema } from '../mastra/agents/schemas.js';
-import { GlobalMapSchema } from '../mastra/agents/globe.js';
 
-// Load environment variables manually if needed
+// Load environment variables
 dotenv.config();
 
-// Ensure Google API Key alias is set
+// Ensure Google API Key alias
 if (process.env.GOOGLE_API_KEY && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     process.env.GOOGLE_GENERATIVE_AI_API_KEY = process.env.GOOGLE_API_KEY;
 }
@@ -16,147 +15,69 @@ if (process.env.GOOGLE_API_KEY && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
+// STRICT FRONTEND ALIGNMENT: Wide CORS for Vercel
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || origin.includes('vercel.app') || origin.includes('localhost')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
+
 app.use(express.json());
 
-// Main Workflow Trigger API
+// 1. NEXUS INTELLIGENCE WORKFLOW
 app.post('/api/workflow/intelligence', async (req, res) => {
+    // Spec says use 'topic'
     const { topic } = req.body;
-
-    if (!topic || typeof topic !== 'string') {
-        return res.status(400).json({ error: 'Valid topic string is required in the request body.' });
-    }
+    if (!topic) return res.status(400).json({ error: 'Valid topic string is required.' });
 
     try {
-        console.log(`\n🚀 Received API Request for Quad-Agent Test: "${topic}"\n`);
         const workflow = mastra.getWorkflow('intelligenceWorkflow');
         const run = await workflow.createRun();
-
-        console.log('🧠 Executing workflow run...');
         const runResult = await run.start({ inputData: { topic } });
 
         if (runResult && runResult.status === 'success') {
             const finalMap = runResult.result?.finalGraph || (runResult.steps as any)?.nexusSynthesis?.output?.finalGraph;
-            const formattedMap = typeof finalMap === 'string' ? JSON.parse(finalMap) : finalMap;
-
-            console.log('✅ Workflow Execution Completed via API');
-            return res.status(200).json({
-                status: 'success',
-                message: 'Intelligence graph successfully generated.',
-                data: formattedMap
-            });
-        } else if (runResult?.status === 'failed') {
-            console.error('❌ Workflow Execution Failed via API');
-            return res.status(500).json({
-                status: 'failed',
-                error: runResult?.error || 'Unknown workflow error occurred.'
-            });
-        } else {
-            return res.status(500).json({
-                status: 'error',
-                error: 'Workflow returned unexpected status or result object.'
-            });
+            // WRAPPED IN 'data' KEY AS PER SPEC
+            return res.status(200).json({ data: finalMap });
         }
+        return res.status(500).json({ error: runResult?.error || 'Workflow execution failed.' });
     } catch (error: any) {
-        console.error('❌ API Error:', error);
-        return res.status(500).json({
-            status: 'error',
-            error: error.message || 'Internal server error during workflow execution.'
-        });
+        return res.status(500).json({ error: error.message });
     }
 });
 
-// Geographic Conflict and Real-Time News API
-app.post('/api/agent/globe', async (req, res) => {
-    const { region, countries } = req.body;
-
-    const prompt = countries ?
-        `List the recent conflict-based status and news for: ${countries.join(', ')}.` :
-        `Analyze current states and news for major countries in the ${region || 'Global'} region.`;
-
-    try {
-        console.log(`\n🗺️  Received API Request for Globe Agent.`);
-        const agent = (mastra as any).getAgent('globeAgent');
-
-        if (!agent) {
-            return res.status(404).json({ error: `Agent globeAgent not found.` });
-        }
-
-        console.log(`Executing globe mapping with recent news for ${region || 'all'}...`);
-        const result = await agent.generate(prompt, {
-            structuredOutput: { schema: GlobalMapSchema }
-        });
-
-        console.log(`✅ Globe Agent Execution Completed`);
-
-        const responseData = result.object || { countries: [] };
-
-        return res.status(200).json({
-            status: 'success',
-            agent: 'globeAgent',
-            data: responseData
-        });
-    } catch (error: any) {
-        console.error(`❌ Globe Agent API Error:`, error);
-        return res.status(500).json({
-            status: 'error',
-            error: error.message || 'Internal server error during globe mapping.'
-        });
-    }
-});
-
-// Individual Agent Trigger API
+// 2. UNIFIED AGENT DISPATCHER (Market, Nature, Shadow, etc.)
 app.post('/api/agent/:agentId', async (req, res) => {
     const { agentId } = req.params;
     const { prompt } = req.body;
 
-    if (!prompt || typeof prompt !== 'string') {
-        return res.status(400).json({ error: 'Valid prompt string is required in the request body.' });
-    }
+    if (!prompt) return res.status(400).json({ error: 'Prompt is required.' });
 
-    // Support both 'market' and 'marketAgent'
     const fullAgentId = agentId.endsWith('Agent') ? agentId : `${agentId}Agent`;
 
     try {
-        console.log(`\n🤖 Received API Request for Agent [${fullAgentId}]`);
-        // The type requires one of the keys provided in the mastra instance
         const agent = mastra.getAgent(fullAgentId as any);
+        if (!agent) return res.status(404).json({ error: `Agent ${fullAgentId} not found.` });
 
-        if (!agent) {
-            return res.status(404).json({ error: `Agent ${fullAgentId} not found.` });
-        }
-
-        console.log(`Executing agent prompt...`);
+        // Force Intelligence Graph Schema for frontend compatibility
         const result = await agent.generate(prompt, {
             structuredOutput: { schema: intelligenceGraphSchema }
         });
 
-        console.log(`✅ Agent [${fullAgentId}] Execution Completed`);
-
-        // Detailed logging for debugging
-        if (!result.object && !result.text) {
-            console.warn(`⚠️ Agent [${fullAgentId}] returned neither object nor text. Result:`, JSON.stringify(result, null, 2));
-        }
-
-        // Return structured data, defaulting to an empty graph if both fields are missing
-        const responseData = result.object || (result.text ? { textContent: result.text } : {
+        // WRAPPED IN 'data' KEY AS PER SPEC
+        const finalData = result.object || {
             nodes: [],
             edges: [],
-            headline: "No definitive intelligence signals found for this sector at the current temporal anchor."
-        });
+            headline: result.text || "No definitive intelligence found."
+        };
 
-        return res.status(200).json({
-            status: 'success',
-            agent: fullAgentId,
-            data: responseData
-        });
+        return res.status(200).json({ data: finalData });
     } catch (error: any) {
-        console.error(`❌ Agent [${fullAgentId}] API Error:`, error);
-        return res.status(500).json({
-            status: 'error',
-            error: error.message || 'Internal server error during agent execution.'
-        });
+        return res.status(500).json({ error: error.message });
     }
 });
 
@@ -171,11 +92,6 @@ app.get('/api/list-models', async (req, res) => {
     }
 });
 
-// A basic health check index
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', mastra: 'ready' });
-});
+app.get('/api/health', (req, res) => res.json({ status: 'active', system: 'TACTIX' }));
 
-app.listen(PORT, () => {
-    console.log(`🚀 Mastra Express APIs running at http://localhost:${PORT}/api`);
-});
+app.listen(PORT, () => console.log(`🚀 TACTIX Engine Ready at PORT ${PORT}`));

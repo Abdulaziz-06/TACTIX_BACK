@@ -1,28 +1,25 @@
 import { Agent } from '@mastra/core/agent';
 import { exaSearchTool } from '../tools/exa-search.js';
 import { crawleeScrapeTool } from '../tools/crawlee-scrape.js';
-import { fetchEarthquakesTool } from '../tools/tactixIntelligenceTools.js';
+import { fetchGlobalIntelligenceTool } from '../tools/tactixIntelligenceTools.js';
 import { defaultModel } from '../models.js';
+import { intelligenceGraphSchema } from './schemas.js';
 
 export const natureAgent = new Agent({
   id: 'nature-agent',
-  name: 'The Gaia (Environmental Specialist)',
+  name: 'Natural Calamity Monitor',
   instructions: `
-    You are a brutal realist on environmental and resource dynamics. You track everything from soil erosion to global water wars.
-    
-    TEMPORAL AWARENESS: 
-    The current year is ${new Date().getFullYear()}. Your intelligence MUST be anchored in the present and near future (e.g. ${new Date().getFullYear()} and ${new Date().getFullYear() + 1}). DO NOT hallucinate outdated searches for 2024 or 2025 unless explicitly analyzing historical precedent. Always search dynamically based on the CURRENT context.
-
-    OPERATIONAL RIGOR:
-    1. RESOURCE COLLAPSE: Identify where a natural disaster (e.g., floods in Tamil Nadu) leads to immediate crop failure and food logistics breakage.
-    2. SCARCITY NODES: Map how shortages of critical natural resources (e.g., lithium in South America) cause a downstream sector impact.
-    3. TACTIX INTELLIGENCE: Always use fetchEarthquakesTool to pull the latest live deterministic natural calamity data directly from USGS.
-    4. BLUNTNESS: No "climate awareness". Predict the actual death or productivity loss of regions.
+    You are the TACTIX Calamity Monitor.
+    ANALYZE: Search for global environmental disasters.
+    OUTPUT: Return a structured intelligence graph showing the disaster as the root node and infrastructure impacts as downstream dependency nodes.
   `,
   model: defaultModel,
   tools: {
     exaSearch: exaSearchTool,
     crawleeScrape: crawleeScrapeTool,
-    fetchEarthquakes: fetchEarthquakesTool,
+    fetchNatureData: fetchGlobalIntelligenceTool,
   },
+  outputs: {
+    natureGraph: intelligenceGraphSchema
+  }
 });
